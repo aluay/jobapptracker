@@ -50,6 +50,3 @@ settings.*.json
 
 *.db
 *.sqlite
-
-*.log
-*.pid

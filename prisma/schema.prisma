@@ -1,0 +1,140 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String           @id @default(cuid())
+  firstName       String?
+  lastName        String?
+  email           String           @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  jobApplications JobApplication[]
+  // Optional for WebAuthn support
+  Authenticator   Authenticator[]
+ 
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Reminder     Reminder[]
+  Notification Notification[]
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  userId      String
+  reminderId  String   @unique
+  title       String
+  description String?
+  notes       String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relations – cascade deletion ensures that when a Reminder is deleted, its Notification is too.
+  User     User     @relation(fields: [userId], references: [id])
+  Reminder Reminder @relation(fields: [reminderId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model JobApplication {
+  id             String    @id @default(cuid())
+  userId         String
+  company        String
+  jobTitle       String
+  location       String
+  status         String
+  appliedDate    DateTime
+  salary         String? // Salary Range (Optional)
+  jobDescription String? // Full Job Description (Optional)
+  recruiterName  String? // Recruiter Name (Optional)
+  recruiterEmail String? // Recruiter Email (Optional)
+  recruiterPhone String? // Recruiter Phone (Optional)
+  notes          String? // Additional Notes (Optional)
+  interviewDate  DateTime? // Interview Date (Optional)
+  followUpDate   DateTime? // Follow-up Reminder Date (Optional)
+  pinned         Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Reminder  Reminder[]
+}
+
+model Reminder {
+  id            String   @id @default(uuid())
+  userId        String
+  applicationId String?
+  title         String   @default("")
+  notes         String?
+  URL           String?
+  priority      Int? // Assuming priority is an integer for now
+  reminderDate  DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Add relations if needed, for example:
+  jobApplication JobApplication? @relation(fields: [applicationId], references: [id])
+  User           User            @relation(fields: [userId], references: [id])
+  Notification   Notification?
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
