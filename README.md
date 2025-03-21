@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Job Application Tracker
 
-## Getting Started
+A web application that helps you **organize and track** your job search process. This project features a **Kanban board** for visualizing each application’s status, **reminders** to follow up on pending tasks, **notifications** for important updates, and **pinned applications** for quickly accessing high-priority roles.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Kanban Board**  
+  Easily visualize your job applications in different stages: Saved, Submitted, Interviewed, Offered, and more.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Reminders & Notifications**  
+  Set reminders for follow-up emails or upcoming interviews, and receive in-app notifications when it’s time to take action.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Pinned Applications**  
+  Pin key applications so they stand out—either at the top of their column or in a dedicated pinned section.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Search & Filtering**  
+  Quickly search through applications by company, job title, description, or notes.
 
-## Learn More
+- **Responsive Design**  
+  Built with mobile-friendly layouts and accessible components for a smooth user experience on any device.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js,
+Prisma,
+shadcn/ui,
+Tailwind CSS
